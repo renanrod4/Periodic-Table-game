@@ -1,11 +1,6 @@
 
-<style>
-img{
-width:35px;
-}
-</style>
+# Periodic-Table-game <img src="https://github.com/renanrod4/Periodic-Table-game/raw/main/sprites/quimica-3279185159" width="5%" height="5%">
 
-# Periodic-Table-game ![quimica logo](sprites/quimica-3279185159)
  It is just a periodic table game for school purposes :)
 
 # Instalation
