@@ -1,5 +1,5 @@
 # Periodic-Table-game
- It is just a Periodic table game for school purposes :)
+ It is just a periodic table game for school purposes :)
 
 # Instalation
 > fist step:
