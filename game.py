@@ -1,10 +1,8 @@
-from tracemalloc import start
 import pygame
 from random import randint
 from time import sleep
 import time
 
-from sqlalchemy import false, true
 pygame.init()
 
 #? VARS
