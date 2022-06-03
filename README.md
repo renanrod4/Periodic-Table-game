@@ -1,3 +1,10 @@
+
+<style>
+img{
+width:35px;
+}
+</style>
+
 # Periodic-Table-game ![quimica logo](sprites/quimica-3279185159)
  It is just a periodic table game for school purposes :)
 
@@ -22,9 +29,3 @@ python3 game.py
 
 
 
-
-<style>
-img{
-width:35px;
-}
-</style>
