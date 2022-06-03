@@ -1,4 +1,4 @@
-# Periodic-Table-game
+# Periodic-Table-game ![quimica logo](sprites/quimica-3279185159)
  It is just a periodic table game for school purposes :)
 
 # Instalation
@@ -19,3 +19,12 @@ or
 # Open
 
 python3 game.py
+
+
+
+
+<style>
+img{
+width:35px;
+}
+</style>
