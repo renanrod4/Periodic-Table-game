@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from time import sleep
 import time
-
+import unicodedata
 pygame.init()
 
 #? VARS
@@ -39,7 +39,6 @@ nomes = ("Hidrogênio", "Hélio", "Lítio", "Berílio", "Boro", "Carbono", "Nitr
 randelement = randint(1,110)
 siglasorteada = siglas[randelement]
 nomesorteado = nomes[randelement]
-print(randelement)
 #? VARS INPUT
 inputresposta = ""
 inputrect = pygame.Rect(xwindow/2-245,ywindow/2+270,490,60)
@@ -98,16 +97,59 @@ credit = pygame.sprite.Sprite(startgroup)
 credit.image = pygame.image.load("./sprites/CREDITBUTTON.png")
 credit.image = pygame.transform.scale(credit.image,[256,129])
 credit.rect = pygame.Rect(xwindow/2-(256/2)+270,ywindow-300,256,129)
+# Cores
+COR_FUNDO_VITORIA = (152, 195, 121)  # Verde esmeralda
+COR_FUNDO_DERROTA = (224, 107, 116)  # Vermelho claro
+
+COR_TEXTO = (236, 240, 241)        # Branco
 
 #? FUNCTIONS 
+
+def restart_game():
+    global started, correct, wrong, lose, win, respondido, inputresposta, respdigits, points, initime
+    started = False
+    correct = False
+    wrong = False
+    lose = False
+    win = False
+    respondido = False
+    inputresposta = ""
+    respdigits = 0
+    points = 0
+    initime = time.time()
+
+
+def remover_acentos(texto):
+    return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn')
 
 def verify(answer,correctanswer):
     if str(answer).lower() == str(correctanswer).lower():
         print("acertou :)")
         display.fill([0, 255, 0])
+    answer_sem_acento = remover_acentos(str(answer))
+    correct_sem_acento = remover_acentos(str(correctanswer))
     
-   
-    return(str(answer) == str(correctanswer))
+    print(answer_sem_acento.lower())
+    print(correctanswer.lower())
+    return answer_sem_acento.lower() == correct_sem_acento.lower()
+
+def show_win_message():
+    display.fill(COR_FUNDO_VITORIA)  # Cor verde para vitória
+    win_text = fonttitle.render("Você venceu!", True, ("#000000"))
+    text_rect = win_text.get_rect(center=(xwindow/2, ywindow/2))
+    display.blit(win_text, text_rect)
+    pygame.display.update()
+    pygame.time.wait(2000)  # Aguarde 2 segundos antes de reiniciar
+
+def show_lose_message():
+    display.fill(COR_FUNDO_DERROTA)  # Cor vermelha para derrota
+    lose_text = fonttitle.render("Você perdeu!", True, ("#000000"))
+    text_rect = lose_text.get_rect(center=(xwindow/2, ywindow/2))
+    display.blit(lose_text, text_rect)
+    pygame.display.update()
+    pygame.time.wait(2000)  # Aguarde 2 segundos antes de reiniciar
+
+
 #? GAME
 while gameloop:
     
@@ -122,20 +164,18 @@ while gameloop:
 
     if correct == False and wrong == True and lose == False and win == False:
         display.fill("#BF616A")
-
-    if lose == True:
-
-        display.fill("#ff0000")
-        losegroup.draw(display)
-        if first_check == False:
-                lasttime = time.time()
-                first_check = True
-        if time.time() - lasttime > 3:
-            pygame.quit()
-
     if win == True:
         display.fill("#00ff00")
         wingroup.draw(display)
+        show_win_message()
+        restart_game()
+
+    if lose == True:
+        display.fill("#ff0000")
+        losegroup.draw(display)
+        show_lose_message()
+        restart_game()
+
     if not started and not isintutorial and not isincredits:
         startgroup.draw(display)
     else:
@@ -175,13 +215,18 @@ while gameloop:
         text_rectname = imgnome.get_rect(center=(xwindow/2, ywindow/2+300))
         display.blit(imgnome, text_rectname)
         seconds = time.time()
-        if round(seconds-initime)>20:
-            lose = True
-            started = "a"
-            
         if points >= 5:
             win = True
-            started = "a"
+            show_win_message()
+            restart_game()
+
+        if round(seconds - initime) > 20:
+            lose = True
+            show_lose_message()
+            restart_game()
+
+
+
 
     else:
         if started == False and isintutorial == False and not isincredits:
@@ -284,13 +329,12 @@ while gameloop:
                     inputresposta = inputresposta[0:-1]
                     if correct == True:
                         respondido = True
-                    if inputresposta.lower() == nomesorteado.lower():
+                    if remover_acentos(inputresposta.lower()) == remover_acentos(nomesorteado.lower()) :
                         correct = True
                         wrong = False
                         respdigits = 0
                         inputresposta = inputresposta[0:0]
                         randelement = randint(0,115)
-                        print(randelement)
                         siglasorteada = siglas[randelement]
                         nomesorteado = nomes[randelement]
                         initime = time.time()
